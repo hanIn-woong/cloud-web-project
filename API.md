@@ -69,7 +69,7 @@ http://localhost:8080
 
 ---
 
-## 2. 교재 목록 & 검색 (BookController - 구현 예정)
+## 2. 교재 목록 & 검색 (BookController)
 
 | 메서드 | 엔드포인트 | 설명 | 인증 |
 |--------|-----------|------|------|
@@ -87,14 +87,17 @@ http://localhost:8080
     "publisher": "정익사",
     "price": 15000,
     "condition": "상",
-    "seller": "김철수"
+    "seller": "김철수",
+    "sellerId": 1,
+    "status": "SALE",
+    "buyerId": null
   }
 ]
 ```
 
 ---
 
-## 3. 교재 등록 & 수정 (BookController - 구현 예정)
+## 3. 교재 등록 & 수정 (BookController)
 
 | 메서드 | 엔드포인트 | 설명 | 인증 |
 |--------|-----------|------|------|
@@ -115,7 +118,36 @@ http://localhost:8080
 
 ---
 
-## 4. 댓글 & 별점 (CommentController - 구현 예정)
+## 4. 구매 & 거래 (PurchaseController)
+
+| 메서드 | 엔드포인트 | 설명 | 인증 |
+|--------|-----------|------|------|
+| POST | `/api/books/{id}/reserve` | 구매 예약 | 🔒 |
+| DELETE | `/api/books/{id}/reserve` | 예약 취소 (판매자) | 🔒 |
+| POST | `/api/books/{id}/complete` | 거래 완료 (판매자) | 🔒 |
+| GET | `/api/members/me/purchases` | 내 구매 내역 조회 | 🔒 |
+
+**구매 예약 요청**
+- 상태가 `SALE`인 교재만 가능하며, 본인 교재는 예약 불가.
+- 성공 시 상태: `RESERVED`, `buyerId`에 요청자 ID 저장.
+
+**구매 내역 응답 예시 (data)**
+```json
+[
+  {
+    "id": 3,
+    "title": "운영체제론",
+    "author": "Abraham Silberschatz",
+    "price": 25000,
+    "status": "SOLD",
+    "seller": "박민수"
+  }
+]
+```
+
+---
+
+## 5. 댓글 & 별점 (CommentController - 구현 예정)
 
 | 메서드 | 엔드포인트 | 설명 | 인증 |
 |--------|-----------|------|------|

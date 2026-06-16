@@ -21,6 +21,9 @@ public class Book implements BaseEntity<Long> {
     private int price;         // 가격
     private String condition;   // 상태 (최상, 상, 중, 하)
     private String seller;      // 판매자명
+    private Long sellerId;      // 판매자 회원 번호 (추가)
+    private BookStatus status = BookStatus.SALE; // 판매 상태 (SALE, RESERVED, SOLD)
+    private Long buyerId;       // 구매자(예약자) 회원 번호
 
     @Override
     public Long getId() {

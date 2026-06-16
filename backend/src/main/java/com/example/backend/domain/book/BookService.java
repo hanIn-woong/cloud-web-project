@@ -18,6 +18,10 @@ public class BookService {
 
     private final BookRepository bookRepository;
 
+    public BookPageResponse findAllBooks(Integer page, Integer size) {
+        return findBooks(null, null, null, null, page, size);
+    }
+
     public BookPageResponse findBooks(
             String keyword,
             String subject,
@@ -48,6 +52,12 @@ public class BookService {
                 .toList();
 
         return new BookPageResponse(content, totalPages, totalElements);
+    }
+
+    public Book findBook(Long id) {
+        validateId(id);
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Book not found."));
     }
 
     private boolean matchesKeyword(Book book, String keyword) {
@@ -104,6 +114,12 @@ public class BookService {
             return DEFAULT_SIZE;
         }
         return Math.min(size, MAX_SIZE);
+    }
+
+    private void validateId(Long id) {
+        if (id == null || id < 1) {
+            throw new IllegalArgumentException("Book id must be greater than 0.");
+        }
     }
 
     private int calculateTotalPages(long totalElements, int size) {

@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ToastProvider } from './context/ToastContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import BookForm from './pages/BookForm';
 import './App.css';
 
 // 임시 페이지 컴포넌트 (팀원들이 각자 구현할 영역)
@@ -30,6 +31,9 @@ function App() {
                             <Route path="/" element={<Home />} />
                             <Route path="/login" element={<Login />} />
                             <Route path="/books" element={<BookList />} />
+                            <Route path="/books/new" element={<BookForm />} />
+                            <Route path="/books/register" element={<BookForm />} />
+                            <Route path="/books/:id/edit" element={<BookForm />} />
                             
                             {/* 로그인한 사용자만 접근 가능한 라우트 예시 */}
                             <Route 

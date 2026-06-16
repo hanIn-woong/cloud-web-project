@@ -1,19 +1,16 @@
 import { Link } from 'react-router-dom';
 
-/**
- * 공통 상단 헤더 컴포넌트 (네비게이션 포함)
- */
 const Header = () => {
-    // TODO: 전역 상태관리(Context 등)에서 로그인 상태를 가져올 예정
     const isLoggedIn = false;
 
     return (
         <nav style={styles.nav}>
             <div style={styles.logo}>
-                <Link to="/" style={styles.link}>📚 강남대 중고장터</Link>
+                <Link to="/" style={styles.link}>강남대 중고교재</Link>
             </div>
             <ul style={styles.menu}>
                 <li><Link to="/books" style={styles.link}>교재목록</Link></li>
+                <li><Link to="/books/new" style={styles.link}>교재등록</Link></li>
                 {isLoggedIn ? (
                     <>
                         <li><Link to="/mypage" style={styles.link}>마이페이지</Link></li>
@@ -32,9 +29,11 @@ const styles = {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
+        gap: '24px',
         padding: '1rem 2rem',
         backgroundColor: '#004798',
         color: '#fff',
+        flexWrap: 'wrap',
     },
     logo: {
         fontSize: '1.5rem',
@@ -42,9 +41,12 @@ const styles = {
     },
     menu: {
         display: 'flex',
+        alignItems: 'center',
         listStyle: 'none',
         gap: '20px',
         margin: 0,
+        padding: 0,
+        flexWrap: 'wrap',
     },
     link: {
         color: '#fff',

@@ -182,3 +182,150 @@
     border-right-color: var(--border);
   }
 }
+
+.book-form-page {
+  width: min(960px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 48px 0 64px;
+  text-align: left;
+}
+
+.book-form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.book-form-header h1 {
+  margin: 6px 0 8px;
+  font-size: 38px;
+  line-height: 1.15;
+  letter-spacing: 0;
+}
+
+.eyebrow {
+  color: #004798;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.book-form-description {
+  color: #5f6673;
+}
+
+.book-form {
+  border: 1px solid #d9dee8;
+  border-radius: 8px;
+  padding: 28px;
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #20242c;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.field input,
+.field select {
+  min-height: 44px;
+  border: 1px solid #c8ced8;
+  border-radius: 6px;
+  padding: 0 12px;
+  color: #1f2937;
+  background: #fff;
+  font: inherit;
+  font-weight: 500;
+  box-sizing: border-box;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: #004798;
+  outline: 3px solid rgba(0, 71, 152, 0.16);
+}
+
+.field small {
+  min-height: 18px;
+  color: #d92d20;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.primary-action,
+.secondary-action {
+  min-height: 42px;
+  border-radius: 6px;
+  padding: 0 18px;
+  font: inherit;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.primary-action {
+  border: 1px solid #004798;
+  color: #fff;
+  background: #004798;
+}
+
+.secondary-action {
+  border: 1px solid #b8c1d0;
+  color: #243247;
+  background: #fff;
+}
+
+@media (max-width: 720px) {
+  .book-form-page {
+    width: min(100% - 28px, 960px);
+    padding: 32px 0 48px;
+  }
+
+  .book-form-header {
+    flex-direction: column;
+  }
+
+  .book-form-header h1 {
+    font-size: 30px;
+  }
+
+  .book-form {
+    padding: 20px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .primary-action,
+  .secondary-action {
+    width: 100%;
+  }
+}

@@ -1,11 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
-/**
- * 공통 상단 헤더 컴포넌트 (네비게이션 포함)
- */
 const Header = () => {
-    // TODO: 전역 상태관리(Context 등)에서 로그인 상태를 가져올 예정
-    const isLoggedIn = false;
+    const navigate = useNavigate();
+    const { isAuthenticated, user, logout } = useAuth();
+
+    const handleLogout = async () => {
+        await logout();
+        navigate('/');
+    };
 
     return (
         <nav style={styles.nav}>
@@ -14,10 +17,11 @@ const Header = () => {
             </div>
             <ul style={styles.menu}>
                 <li><Link to="/books" style={styles.link}>교재목록</Link></li>
-                {isLoggedIn ? (
+                {isAuthenticated ? (
                     <>
+                        <li><span style={styles.userName}>{user?.name}님</span></li>
                         <li><Link to="/mypage" style={styles.link}>마이페이지</Link></li>
-                        <li><button style={styles.logoutBtn}>로그아웃</button></li>
+                        <li><button type="button" onClick={handleLogout} style={styles.logoutBtn}>로그아웃</button></li>
                     </>
                 ) : (
                     <li><Link to="/login" style={styles.link}>로그인</Link></li>
@@ -45,10 +49,14 @@ const styles = {
         listStyle: 'none',
         gap: '20px',
         margin: 0,
+        alignItems: 'center',
     },
     link: {
         color: '#fff',
         textDecoration: 'none',
+    },
+    userName: {
+        fontWeight: 600,
     },
     logoutBtn: {
         backgroundColor: 'transparent',
@@ -56,7 +64,7 @@ const styles = {
         color: '#fff',
         padding: '5px 10px',
         cursor: 'pointer',
-    }
+    },
 };
 
 export default Header;

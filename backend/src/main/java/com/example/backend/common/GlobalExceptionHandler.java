@@ -35,7 +35,7 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
                 .body(ApiResponse.error("요청한 리소스를 찾을 수 없습니다."));
-      
+    }
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ApiResponse<Void>> handleUnauthorizedException(UnauthorizedException e) {
         log.warn("인증 실패: {}", e.getMessage());

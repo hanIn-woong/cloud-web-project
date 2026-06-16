@@ -43,8 +43,9 @@ public class AuthController {
     @GetMapping("/me")
     public ApiResponse<UserResponse> me(HttpSession session) {
         String userId = (String) session.getAttribute(SESSION_USER_ID);
+        // 인터셉터에서 이미 체크하지만, 타입 안전성을 위해 남겨두거나 명시적 예외를 던집니다.
         if (userId == null) {
-            throw new IllegalArgumentException("로그인이 필요합니다.");
+            throw new com.example.backend.common.UnauthorizedException("로그인이 필요합니다.");
         }
 
         return ApiResponse.success(authService.getCurrentUser(userId));

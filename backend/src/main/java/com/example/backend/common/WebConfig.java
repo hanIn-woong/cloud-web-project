@@ -1,14 +1,32 @@
 package com.example.backend.common;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
- * 전역 웹 설정 (CORS 설정 등)
+ * 전역 웹 설정 (CORS 설정, 인터셉터 등록 등)
  */
 @Configuration
+@RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
+
+    private final LoginInterceptor loginInterceptor;
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(loginInterceptor)
+                .addPathPatterns("/api/**") // 모든 API 경로에 적용
+                .excludePathPatterns(
+                        "/api/auth/login",
+                        "/api/auth/signup",
+                        "/api/books",
+                        "/api/books/{id:[0-9]+}",
+                        "/api/books/search"
+                ); // 인증이 필요 없는 경로 제외
+    }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {

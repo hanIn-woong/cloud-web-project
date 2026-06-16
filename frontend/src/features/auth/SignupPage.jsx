@@ -106,10 +106,13 @@ const SignupPage = () => {
 
 const styles = {
     container: {
+        flex: 1,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        width: '100%',
         padding: '40px 20px',
+        boxSizing: 'border-box',
     },
     card: {
         width: '100%',

@@ -41,7 +41,7 @@ const PrivateRoute = ({ children }) => {
 const AppRoutes = () => (
     <div className="App" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <Header />
-        <main style={{ flex: 1 }}>
+        <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<LoginPage />} />

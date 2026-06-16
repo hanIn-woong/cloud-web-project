@@ -18,7 +18,6 @@ const Header = () => {
             <ul style={styles.menu}>
                 <li><Link to="/books" style={styles.link}>교재목록</Link></li>
                 <li><Link to="/books/new" style={styles.link}>교재등록</Link></li>
-                {isLoggedIn ? (
                 {isAuthenticated ? (
                     <>
                         <li><span style={styles.userName}>{user?.name}님</span></li>

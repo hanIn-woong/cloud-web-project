@@ -3,6 +3,7 @@ import { ToastProvider } from './context/ToastContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import BookForm from './pages/BookForm';
 import LoginPage from './features/auth/LoginPage';
 import SignupPage from './features/auth/SignupPage';
 import './App.css';
@@ -47,6 +48,8 @@ const AppRoutes = () => (
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/books" element={<BookList />} />
+                <Route path="/books/new" element={<BookForm />} />
+                <Route path="/books/:id/edit" element={<BookForm />} />
                 <Route
                     path="/mypage"
                     element={

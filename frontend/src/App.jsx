@@ -1,10 +1,11 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { ToastProvider } from './context/ToastContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import LoginPage from './features/auth/LoginPage';
 import SignupPage from './features/auth/SignupPage';
+import CommentContainer from './features/comment/CommentContainer';
 import './App.css';
 
 const Home = () => (
@@ -38,6 +39,21 @@ const PrivateRoute = ({ children }) => {
     return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
+const BookDetail = () => {
+    const { id } = useParams();
+    return (
+        <div style={{ padding: '20px' }}>
+            <h1>교재 상세 정보 (ID: {id})</h1>
+            <div style={{ border: '1px solid #ddd', padding: '15px', borderRadius: '8px' }}>
+                <h3>[구현 예정] 교재 정보 영역 (정민성)</h3>
+                <p>제목, 저자, 가격 등의 정보가 표시됩니다.</p>
+            </div>
+            
+            <CommentContainer bookId={parseInt(id)} />
+        </div>
+    );
+};
+
 const AppRoutes = () => (
     <div className="App" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <Header />
@@ -47,6 +63,7 @@ const AppRoutes = () => (
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/books" element={<BookList />} />
+                <Route path="/books/:id" element={<BookDetail />} />
                 <Route
                     path="/mypage"
                     element={

@@ -35,4 +35,17 @@ api.interceptors.response.use(
     }
 );
 
+export const authApi = {
+    signup: (data) => api.post('/api/auth/signup', data),
+    login: (data) => api.post('/api/auth/login', data),
+    logout: () => api.post('/api/auth/logout'),
+    me: () => api.get('/api/auth/me'),
+};
+
+export const commentApi = {
+    getComments: (bookId) => api.get(`/api/books/${bookId}/comments`),
+    addComment: (bookId, data) => api.post(`/api/books/${bookId}/comments`, data),
+    deleteComment: (bookId, commentId) => api.delete(`/api/books/${bookId}/comments/${commentId}`),
+};
+
 export default api;

@@ -45,7 +45,10 @@ public class BookService {
                 normalize(request.publisher()),
                 request.price(),
                 normalize(request.condition()),
-                normalize(request.seller())
+                normalize(request.seller()),
+                null,     // sellerId
+                BookStatus.SALE, // status
+                null            // buyerId
         );
 
         return bookRepository.save(book);
@@ -63,7 +66,10 @@ public class BookService {
                 normalize(request.publisher()),
                 request.price(),
                 normalize(request.condition()),
-                normalize(request.seller())
+                normalize(request.seller()),
+                null,    // sellerId
+                BookStatus.SALE, // status
+                null            // buyerId
         );
 
         return bookRepository.save(updated);

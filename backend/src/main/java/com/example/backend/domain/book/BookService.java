@@ -19,12 +19,11 @@ public class BookService {
     private final BookRepository bookRepository;
 
     public BookPageResponse findAllBooks(Integer page, Integer size) {
-        return findBooks(null, null, null, null, page, size);
+        return findBooks(null, null, null, page, size);
     }
 
     public BookPageResponse findBooks(
             String keyword,
-            String subject,
             String condition,
             String status,
             Integer page,

@@ -27,13 +27,12 @@ public class BookController {
     @GetMapping("/search")
     public ApiResponse<BookPageResponse> searchBooks(
             @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) String subject,
             @RequestParam(required = false) String condition,
             @RequestParam(required = false) String status,
             @RequestParam(required = false) Integer page,
             @RequestParam(required = false) Integer size
     ) {
-        return ApiResponse.success(bookService.findBooks(keyword, subject, condition, status, page, size));
+        return ApiResponse.success(bookService.findBooks(keyword, condition, status, page, size));
     }
 
     @GetMapping("/{id:\\d+}")

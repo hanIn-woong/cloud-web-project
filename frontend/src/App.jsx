@@ -48,6 +48,8 @@ const AppRoutes = () => (
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/books" element={<BookList />} />
+                <Route path="/books/new" element={<BookForm />} />
+                <Route path="/books/:id/edit" element={<BookForm />} />
                 <Route
                     path="/mypage"
                     element={

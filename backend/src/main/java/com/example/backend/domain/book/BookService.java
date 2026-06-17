@@ -1,6 +1,7 @@
 package com.example.backend.domain.book;
 
 import com.example.backend.domain.book.dto.BookPageResponse;
+import com.example.backend.domain.book.dto.BookRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

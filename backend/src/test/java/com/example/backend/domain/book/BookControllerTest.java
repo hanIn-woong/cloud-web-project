@@ -47,7 +47,7 @@ class BookControllerTest {
                 "gildong"
         );
 
-        String createdBody = mockMvc.perform(post("/books")
+        String createdBody = mockMvc.perform(post("/api/books")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createRequest)))
                 .andExpect(status().isOk())
@@ -61,15 +61,15 @@ class BookControllerTest {
         long createdId = createdJson.path("data").path("id").asLong();
         assertTrue(createdId > 0);
 
-        mockMvc.perform(get("/books/{id}", createdId))
+        mockMvc.perform(get("/api/books/{id}", createdId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data.author").value("Hong Gildong"));
 
-        mockMvc.perform(get("/books").param("keyword", "Searchable"))
+        mockMvc.perform(get("/api/books/search").param("keyword", "Searchable"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data[0].title").value("Searchable Title"));
+                .andExpect(jsonPath("$.data.content[0].title").value("Searchable Title"));
 
         BookRequest updateRequest = new BookRequest(
                 "Updated Title",
@@ -80,7 +80,7 @@ class BookControllerTest {
                 "gildong"
         );
 
-        mockMvc.perform(put("/books/{id}", createdId)
+        mockMvc.perform(put("/api/books/{id}", createdId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isOk())
@@ -88,12 +88,12 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.data.title").value("Updated Title"))
                 .andExpect(jsonPath("$.data.price").value(15000));
 
-        mockMvc.perform(delete("/books/{id}", createdId))
+        mockMvc.perform(delete("/api/books/{id}", createdId))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.message").isNotEmpty());
 
-        mockMvc.perform(get("/books/{id}", createdId))
+        mockMvc.perform(get("/api/books/{id}", createdId))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.success").value(false));
     }

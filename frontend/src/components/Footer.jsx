@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 import knuLogo from '../assets/KNU_logo.png';
 
+=======
+>>>>>>> feature/mypage-wishlist
 /**
  * 공통 하단 바 컴포넌트
  */
@@ -10,6 +13,7 @@ const Footer = () => {
         <footer style={styles.footer}>
             <div style={styles.container}>
                 <div style={styles.info}>
+<<<<<<< HEAD
                     <h3 style={styles.title}>
                         <img src={knuLogo} alt="KNU Logo" style={styles.footerLogo} />
                         강남대 중고교재
@@ -20,6 +24,14 @@ const Footer = () => {
                     <p style={styles.text}>&copy; {currentYear} 3팀 (김태희, 주승준, 한인웅, 정민성, 김민호, 조건희). All rights reserved.</p>
                 </div>
 
+=======
+                    <h3 style={styles.title}>📚 강남대 중고장터</h3>
+                    <p style={styles.text}>학습 목적의 풀스택 팀 프로젝트입니다.</p>
+                </div>
+                <div style={styles.copyright}>
+                    <p style={styles.text}>&copy; {currentYear} 3팀 (한인웅, 조건희, 정민성, 김민호, 김태희, 주승준). All rights reserved.</p>
+                </div>
+>>>>>>> feature/mypage-wishlist
             </div>
         </footer>
     );
@@ -47,6 +59,7 @@ const styles = {
     title: {
         margin: '0 0 0.5rem 0',
         fontSize: '1.2rem',
+<<<<<<< HEAD
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -55,6 +68,8 @@ const styles = {
     footerLogo: {
         height: '24px',
         width: 'auto',
+=======
+>>>>>>> feature/mypage-wishlist
     },
     copyright: {
         borderTop: '1px solid #0056B3',

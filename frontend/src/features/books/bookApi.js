@@ -32,6 +32,7 @@ export const getBook = async (id) => {
 
     return response.data?.data ?? response.data;
 };
+<<<<<<< HEAD
 
 export const reserveBook = async (id) => {
     const response = await axios.post(`${API_BASE_URL}/api/books/${id}/reserve`, {}, {
@@ -60,3 +61,5 @@ export const getMyPurchases = async () => {
     });
     return response.data?.data ?? response.data;
 };
+=======
+>>>>>>> feature/mypage-wishlist

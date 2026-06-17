@@ -1,8 +1,13 @@
+<<<<<<< HEAD
 import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom';
+=======
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+>>>>>>> feature/mypage-wishlist
 import { ToastProvider } from './context/ToastContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
+<<<<<<< HEAD
 import HomePage from './pages/HomePage';
 import BookForm from './pages/BookForm';
 import LoginPage from './features/auth/LoginPage';
@@ -15,6 +20,21 @@ const MyPage = () => (
     <div style={{ padding: '20px' }}>
         <h1>마이페이지</h1>
         <p>회원 정보 및 찜 목록 (주승준)</p>
+=======
+import BookForm from './pages/BookForm';
+import LoginPage from './features/auth/LoginPage';
+import SignupPage from './features/auth/SignupPage';
+import BookList from './features/books/BookList';
+import BookDetail from './features/books/BookDetail';
+import MyPage from './pages/MyPage';
+import WishList from './pages/WishList';
+import './App.css';
+
+const Home = () => (
+    <div style={{ padding: '20px' }}>
+        <h1>메인 페이지</h1>
+        <p>강남대 중고 교재 거래 사이트에 오신 것을 환영합니다.</p>
+>>>>>>> feature/mypage-wishlist
     </div>
 );
 
@@ -28,6 +48,7 @@ const PrivateRoute = ({ children }) => {
     return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
+<<<<<<< HEAD
 const BookDetail = () => {
     const { id } = useParams();
     return (
@@ -43,12 +64,18 @@ const BookDetail = () => {
     );
 };
 
+=======
+>>>>>>> feature/mypage-wishlist
 const AppRoutes = () => (
     <div className="App" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <Header />
         <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <Routes>
+<<<<<<< HEAD
                 <Route path="/" element={<HomePage />} />
+=======
+                <Route path="/" element={<Home />} />
+>>>>>>> feature/mypage-wishlist
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/books" element={<BookList />} />
@@ -63,6 +90,17 @@ const AppRoutes = () => (
                         </PrivateRoute>
                     }
                 />
+<<<<<<< HEAD
+=======
+                <Route
+                    path="/wishlist"
+                    element={
+                        <PrivateRoute>
+                            <WishList />
+                        </PrivateRoute>
+                    }
+                />
+>>>>>>> feature/mypage-wishlist
                 <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
         </main>

@@ -1,4 +1,8 @@
 import { Link } from 'react-router-dom';
+<<<<<<< HEAD
+=======
+import WishButton from './WishButton';
+>>>>>>> feature/mypage-wishlist
 
 const statusLabel = {
     SALE: '판매중',
@@ -42,7 +46,14 @@ const BookTableRow = ({ book }) => {
 
             <div className="book-row__content">
                 <div className="book-row__top">
+<<<<<<< HEAD
                     <h2>{book.title}</h2>
+=======
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <h2>{book.title}</h2>
+                        <WishButton bookId={book.id} />
+                    </div>
+>>>>>>> feature/mypage-wishlist
                     <span className={`book-row__status book-row__status--${book.status?.toLowerCase()}`}>
                         {status}
                     </span>

@@ -17,13 +17,6 @@ const Home = () => (
     </div>
 );
 
-const BookList = () => (
-    <div style={{ padding: '20px' }}>
-        <h1>교재 목록</h1>
-        <p>교재 목록 및 검색 기능 구현 예정 (정민성)</p>
-    </div>
-);
-
 const MyPage = () => (
     <div style={{ padding: '20px' }}>
         <h1>마이페이지</h1>

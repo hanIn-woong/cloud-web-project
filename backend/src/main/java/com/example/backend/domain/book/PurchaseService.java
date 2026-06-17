@@ -79,6 +79,16 @@ public class PurchaseService {
     }
 
     /**
+     * 내 예약 내역 조회
+     */
+    public List<Book> getMyReservations(String sessionUserId) {
+        User user = findUserBySessionId(sessionUserId);
+        return bookRepository.findAll().stream()
+                .filter(book -> user.getId().equals(book.getBuyerId()) && book.getStatus() == BookStatus.RESERVED)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * 내 구매 내역 조회
      */
     public List<Book> getMyPurchases(String sessionUserId) {

@@ -60,3 +60,10 @@ export const getMyPurchases = async () => {
     });
     return response.data?.data ?? response.data;
 };
+
+export const getMyReservations = async () => {
+    const response = await axios.get(`${API_BASE_URL}/api/members/me/reservations`, {
+        withCredentials: true,
+    });
+    return response.data?.data ?? response.data;
+};

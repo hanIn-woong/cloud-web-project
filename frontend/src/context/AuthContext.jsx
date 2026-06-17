@@ -1,9 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import * as authApi from '../features/auth/authApi';
-<<<<<<< HEAD
-=======
 import { memberApi } from '../ApiService';
->>>>>>> feature/mypage-wishlist
 
 const AuthContext = createContext(null);
 
@@ -17,10 +14,6 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-<<<<<<< HEAD
-    const [isLoading, setIsLoading] = useState(true);
-
-=======
     const [wishlist, setWishlist] = useState([]); // Array of book IDs or Book objects
     const [isLoading, setIsLoading] = useState(true);
 
@@ -37,17 +30,10 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
->>>>>>> feature/mypage-wishlist
     const refreshUser = useCallback(async () => {
         try {
             const currentUser = await authApi.getMe();
             setUser(currentUser);
-<<<<<<< HEAD
-        } catch {
-            setUser(null);
-        }
-    }, []);
-=======
             if (currentUser) {
                 await refreshWishlist(currentUser.id);
             }
@@ -56,7 +42,6 @@ export const AuthProvider = ({ children }) => {
             setWishlist([]);
         }
     }, [refreshWishlist]);
->>>>>>> feature/mypage-wishlist
 
     useEffect(() => {
         const initAuth = async () => {
@@ -74,16 +59,11 @@ export const AuthProvider = ({ children }) => {
     const login = useCallback(async (credentials) => {
         const loggedInUser = await authApi.login(credentials);
         setUser(loggedInUser);
-<<<<<<< HEAD
-        return loggedInUser;
-    }, []);
-=======
         if (loggedInUser) {
             await refreshWishlist(loggedInUser.id);
         }
         return loggedInUser;
     }, [refreshWishlist]);
->>>>>>> feature/mypage-wishlist
 
     const signup = useCallback(async (data) => {
         return authApi.signup(data);
@@ -92,8 +72,6 @@ export const AuthProvider = ({ children }) => {
     const logout = useCallback(async () => {
         await authApi.logout();
         setUser(null);
-<<<<<<< HEAD
-=======
         setWishlist([]);
     }, []);
 
@@ -109,7 +87,6 @@ export const AuthProvider = ({ children }) => {
                 return prev.filter(id => id !== bookId);
             }
         });
->>>>>>> feature/mypage-wishlist
     }, []);
 
     const value = useMemo(
@@ -117,22 +94,15 @@ export const AuthProvider = ({ children }) => {
             user,
             isLoading,
             isAuthenticated: !!user,
-<<<<<<< HEAD
-=======
             wishlist,
             isWished,
             toggleWishLocal,
             refreshWishlist,
->>>>>>> feature/mypage-wishlist
             login,
             signup,
             logout,
         }),
-<<<<<<< HEAD
-        [user, isLoading, login, signup, logout]
-=======
         [user, isLoading, wishlist, isWished, toggleWishLocal, refreshWishlist, login, signup, logout]
->>>>>>> feature/mypage-wishlist
     );
 
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

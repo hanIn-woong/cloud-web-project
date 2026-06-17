@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getBook } from './bookApi';
-<<<<<<< HEAD
-=======
 import WishButton from './components/WishButton';
 import CommentContainer from '../comment/CommentContainer';
->>>>>>> feature/mypage-wishlist
 import './BookList.css';
 
 const statusLabel = {
@@ -101,14 +98,10 @@ const BookDetail = () => {
 
                 <div className="book-detail__content">
                     <div className="book-detail__top">
-<<<<<<< HEAD
-                        <h1>{book.title}</h1>
-=======
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                             <h1>{book.title}</h1>
                             <WishButton bookId={book.id} />
                         </div>
->>>>>>> feature/mypage-wishlist
                         <span className={`book-row__status book-row__status--${book.status?.toLowerCase()}`}>
                             {statusLabel[book.status] ?? book.status ?? '상태 미정'}
                         </span>
@@ -138,13 +131,10 @@ const BookDetail = () => {
                     </dl>
                 </div>
             </article>
-<<<<<<< HEAD
-=======
 
             <section style={{ marginTop: '40px' }}>
                 <CommentContainer bookId={parseInt(id)} />
             </section>
->>>>>>> feature/mypage-wishlist
         </div>
     );
 };

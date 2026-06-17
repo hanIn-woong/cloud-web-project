@@ -56,4 +56,14 @@ public class PurchaseController {
         List<Book> purchases = purchaseService.getMyPurchases(userId);
         return ApiResponse.success(purchases);
     }
+
+    /**
+     * 내 예약 내역 조회
+     */
+    @GetMapping("/api/members/me/reservations")
+    public ApiResponse<List<Book>> getMyReservations(HttpSession session) {
+        String userId = (String) session.getAttribute(SESSION_USER_ID);
+        List<Book> reservations = purchaseService.getMyReservations(userId);
+        return ApiResponse.success(reservations);
+    }
 }

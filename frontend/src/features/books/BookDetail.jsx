@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { getBook } from './bookApi';
+import { useEffect, useState, useCallback } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { getBook, reserveBook, cancelReservation, completePurchase } from './bookApi';
+import { useAuth } from '../../context/AuthContext';
+import { useToast } from '../../context/ToastContext';
 import WishButton from './components/WishButton';
 import CommentContainer from '../comment/CommentContainer';
 import './BookList.css';
@@ -21,43 +23,49 @@ const formatPrice = (price) => {
 
 const BookDetail = () => {
     const { id } = useParams();
+    const navigate = useNavigate();
+    const { user, isAuthenticated } = useAuth();
+    const { showToast } = useToast();
     const [book, setBook] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [isActionLoading, setIsActionLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
-    useEffect(() => {
-        let ignore = false;
+    const loadBook = useCallback(async () => {
+        setIsLoading(true);
+        setErrorMessage('');
 
-        const loadBook = async () => {
-            setIsLoading(true);
-            setErrorMessage('');
-
-            try {
-                const result = await getBook(id);
-
-                if (!ignore) {
-                    setBook(result);
-                }
-            } catch (error) {
-                if (!ignore) {
-                    setBook(null);
-                    setErrorMessage(error.message || '교재 상세 정보를 불러오지 못했습니다.');
-                }
-            } finally {
-                if (!ignore) {
-                    setIsLoading(false);
-                }
-            }
-        };
-
-        loadBook();
-
-        return () => {
-            ignore = true;
-        };
+        try {
+            const result = await getBook(id);
+            setBook(result);
+        } catch (error) {
+            setBook(null);
+            setErrorMessage(error.message || '교재 상세 정보를 불러오지 못했습니다.');
+        } finally {
+            setIsLoading(false);
+        }
     }, [id]);
 
-    if (isLoading) {
+    useEffect(() => {
+        loadBook();
+    }, [loadBook]);
+
+    const handleAction = async (actionFn, successMsg, confirmMsg) => {
+        if (confirmMsg && !window.confirm(confirmMsg)) return;
+
+        setIsActionLoading(true);
+        try {
+            await actionFn(id);
+            showToast(successMsg, 'success');
+            await loadBook(); // 데이터 새로고침
+        } catch (error) {
+            showToast(error.message || '요청 처리에 실패했습니다.', 'error');
+        } finally {
+            setIsActionLoading(false);
+        }
+    };
+
+    if (isLoading && !book) {
         return (
             <div className="book-page">
                 <p className="book-page__message">교재 정보를 불러오는 중...</p>
@@ -82,6 +90,9 @@ const BookDetail = () => {
             </div>
         );
     }
+
+    const isSeller = isAuthenticated && user?.id === book.sellerId;
+    const isBuyer = isAuthenticated && user?.id === book.buyerId;
 
     return (
         <div className="book-page">
@@ -124,11 +135,72 @@ const BookDetail = () => {
                             <dt>판매자</dt>
                             <dd>{book.seller ?? '판매자 미정'}</dd>
                         </div>
-                        <div>
+                        <div style={{ gridColumn: 'span 2' }}>
                             <dt>가격</dt>
-                            <dd>{formatPrice(book.price)}</dd>
+                            <dd style={{ fontSize: '24px', color: '#004798' }}>{formatPrice(book.price)}</dd>
                         </div>
                     </dl>
+
+                    {/* Transaction Action Buttons */}
+                    <div style={styles.actionBar}>
+                        {!isAuthenticated && book.status === 'SALE' && (
+                            <button 
+                                onClick={() => navigate('/login')}
+                                style={styles.primaryBtn}
+                            >
+                                로그인 후 예약하기
+                            </button>
+                        )}
+
+                        {isAuthenticated && !isSeller && book.status === 'SALE' && (
+                            <button 
+                                onClick={() => handleAction(reserveBook, '구매 예약이 완료되었습니다.', '이 교재를 예약하시겠습니까?')}
+                                disabled={isActionLoading}
+                                style={styles.primaryBtn}
+                            >
+                                {isActionLoading ? '처리 중...' : '구매 예약하기'}
+                            </button>
+                        )}
+
+                        {isBuyer && book.status === 'RESERVED' && (
+                            <button 
+                                onClick={() => handleAction(cancelReservation, '예약이 취소되었습니다.', '예약을 취소하시겠습니까?')}
+                                disabled={isActionLoading}
+                                style={styles.dangerBtn}
+                            >
+                                {isActionLoading ? '처리 중...' : '예약 취소하기'}
+                            </button>
+                        )}
+
+                        {isSeller && book.status === 'SALE' && (
+                            <Link to={`/books/${id}/edit`} style={styles.secondaryBtn}>
+                                교재 정보 수정하기
+                            </Link>
+                        )}
+
+                        {isSeller && book.status === 'RESERVED' && (
+                            <>
+                                <button 
+                                    onClick={() => handleAction(completePurchase, '거래가 완료되었습니다.', '거래를 완료 처리하시겠습니까?\n완료 후에는 취소할 수 없습니다.')}
+                                    disabled={isActionLoading}
+                                    style={styles.successBtn}
+                                >
+                                    {isActionLoading ? '처리 중...' : '거래 완료 (판매확정)'}
+                                </button>
+                                <button 
+                                    onClick={() => handleAction(cancelReservation, '예약이 취소되었습니다.', '예약을 취소하고 다시 판매하시겠습니까?')}
+                                    disabled={isActionLoading}
+                                    style={styles.dangerBtn}
+                                >
+                                    {isActionLoading ? '처리 중...' : '예약 취소'}
+                                </button>
+                            </>
+                        )}
+
+                        {book.status === 'SOLD' && (
+                            <div style={styles.soldOutBadge}>판매가 완료된 교재입니다.</div>
+                        )}
+                    </div>
                 </div>
             </article>
 
@@ -137,6 +209,75 @@ const BookDetail = () => {
             </section>
         </div>
     );
+};
+
+const styles = {
+    actionBar: {
+        marginTop: '32px',
+        display: 'flex',
+        gap: '12px',
+        flexWrap: 'wrap',
+    },
+    primaryBtn: {
+        padding: '14px 28px',
+        backgroundColor: '#004798',
+        color: '#fff',
+        border: 'none',
+        borderRadius: '8px',
+        fontSize: '1.1rem',
+        fontWeight: '800',
+        cursor: 'pointer',
+        flex: 1,
+        minWidth: '180px',
+    },
+    secondaryBtn: {
+        padding: '14px 28px',
+        backgroundColor: '#fff',
+        color: '#004798',
+        border: '2px solid #004798',
+        borderRadius: '8px',
+        fontSize: '1.1rem',
+        fontWeight: '800',
+        textDecoration: 'none',
+        textAlign: 'center',
+        flex: 1,
+        minWidth: '180px',
+    },
+    successBtn: {
+        padding: '14px 28px',
+        backgroundColor: '#16a34a',
+        color: '#fff',
+        border: 'none',
+        borderRadius: '8px',
+        fontSize: '1.1rem',
+        fontWeight: '800',
+        cursor: 'pointer',
+        flex: 2,
+        minWidth: '200px',
+    },
+    dangerBtn: {
+        padding: '14px 28px',
+        backgroundColor: '#fff',
+        color: '#dc2626',
+        border: '2px solid #dc2626',
+        borderRadius: '8px',
+        fontSize: '1.1rem',
+        fontWeight: '800',
+        cursor: 'pointer',
+        flex: 1,
+        minWidth: '150px',
+    },
+    soldOutBadge: {
+        padding: '16px',
+        backgroundColor: '#f1f5f9',
+        color: '#475569',
+        borderRadius: '8px',
+        fontSize: '1.1rem',
+        fontWeight: '800',
+        textAlign: 'center',
+        width: '100%',
+        border: '1px dashed #cbd5e1',
+    }
 };
 
 export default BookDetail;

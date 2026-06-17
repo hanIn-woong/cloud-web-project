@@ -48,4 +48,13 @@ export const commentApi = {
     deleteComment: (bookId, commentId) => api.delete(`/api/books/${bookId}/comments/${commentId}`),
 };
 
+export const wishApi = {
+    toggleWish: (bookId) => api.post('/api/wishes', { bookId }),
+};
+
+export const memberApi = {
+    getMyBooks: (memberId) => api.get(`/api/members/${memberId}/books`),
+    getMyWishes: (memberId) => api.get(`/api/members/${memberId}/wishes`),
+};
+
 export default api;

@@ -16,10 +16,9 @@ const Footer = () => {
                     </h3>
                     <p style={styles.text}>학습 목적의 풀스택 팀 프로젝트입니다.</p>
                 </div>
-                <div className="copyright">
+                <div style={styles.copyright}>
                     <p style={styles.text}>&copy; {currentYear} 3팀 (김태희, 주승준, 한인웅, 정민성, 김민호, 조건희). All rights reserved.</p>
                 </div>
-
             </div>
         </footer>
     );

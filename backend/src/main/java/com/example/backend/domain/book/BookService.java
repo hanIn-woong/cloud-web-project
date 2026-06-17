@@ -70,39 +70,39 @@ public class BookService {
     public Book createBook(BookRequest request) {
         validateRequest(request);
 
-        Book book = new Book(
-                nextId(),
-                normalize(request.title()),
-                normalize(request.author()),
-                normalize(request.publisher()),
-                request.price(),
-                normalize(request.condition()),
-                normalize(request.seller()),
-                null,     // sellerId
-                BookStatus.SALE, // status
-                null            // buyerId
-        );
+        Book book = Book.builder()
+                .id(nextId())
+                .title(normalize(request.title()))
+                .author(normalize(request.author()))
+                .publisher(normalize(request.publisher()))
+                .price(request.price())
+                .condition(normalize(request.condition()))
+                .seller(normalize(request.seller()))
+                .createdAt(System.currentTimeMillis())
+                .status(BookStatus.SALE)
+                .build();
 
         return bookRepository.save(book);
     }
 
     public Book updateBook(Long id, BookRequest request) {
         validateId(id);
-        findBook(id);
+        Book existing = findBook(id);
         validateRequest(request);
 
-        Book updated = new Book(
-                id,
-                normalize(request.title()),
-                normalize(request.author()),
-                normalize(request.publisher()),
-                request.price(),
-                normalize(request.condition()),
-                normalize(request.seller()),
-                null,    // sellerId
-                BookStatus.SALE, // status
-                null            // buyerId
-        );
+        Book updated = Book.builder()
+                .id(id)
+                .title(normalize(request.title()))
+                .author(normalize(request.author()))
+                .publisher(normalize(request.publisher()))
+                .price(request.price())
+                .condition(normalize(request.condition()))
+                .seller(normalize(request.seller()))
+                .sellerId(existing.getSellerId())
+                .createdAt(existing.getCreatedAt())
+                .status(existing.getStatus())
+                .buyerId(existing.getBuyerId())
+                .build();
 
         return bookRepository.save(updated);
     }
@@ -162,10 +162,6 @@ public class BookService {
             return true;
         }
         return containsIgnoreCase(book.getCondition(), condition);
-    }
-
-    private boolean matchesStatus(Book book, BookStatus status) {
-        return status == null || book.getStatus() == status;
     }
 
     private BookStatus parseStatus(String status) {

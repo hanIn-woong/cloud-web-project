@@ -26,6 +26,7 @@ const Header = () => {
                     <>
                         <li><span style={styles.userName}>{user?.name}님</span></li>
                         <li><Link to="/mypage" style={styles.link}>마이페이지</Link></li>
+                        <li><Link to="/wishlist" style={styles.link}>찜목록</Link></li>
                         <li><button type="button" onClick={handleLogout} style={styles.logoutBtn}>로그아웃</button></li>
                     </>
                 ) : (

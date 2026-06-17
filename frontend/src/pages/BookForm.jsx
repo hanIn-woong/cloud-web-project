@@ -36,7 +36,7 @@ const BookForm = () => {
         const fetchBook = async () => {
             setIsLoading(true);
             try {
-                const book = await api.get(`/books/${id}`);
+                const book = await api.get(`/api/books/${id}`);
                 setForm({
                     title: book.title ?? '',
                     author: book.author ?? '',
@@ -104,8 +104,8 @@ const BookForm = () => {
         setIsLoading(true);
         try {
             const savedBook = isEditMode
-                ? await api.put(`/books/${id}`, payload)
-                : await api.post('/books', payload);
+                ? await api.put(`/api/books/${id}`, payload)
+                : await api.post('/api/books', payload);
 
             showToast(
                 isEditMode ? '교재 정보가 수정되었습니다.' : '교재가 등록되었습니다.',

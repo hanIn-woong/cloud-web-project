@@ -67,7 +67,7 @@ public class BookService {
                 .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 교재입니다."));
     }
 
-    public Book createBook(BookRequest request) {
+    public Book createBook(BookRequest request, Long sellerId) {
         validateRequest(request);
 
         Book book = Book.builder()
@@ -78,6 +78,7 @@ public class BookService {
                 .price(request.price())
                 .condition(normalize(request.condition()))
                 .seller(normalize(request.seller()))
+                .sellerId(sellerId) // 현재 로그인한 사용자의 고유 ID 저장
                 .createdAt(System.currentTimeMillis())
                 .status(BookStatus.SALE)
                 .build();
@@ -85,9 +86,15 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    public Book updateBook(Long id, BookRequest request) {
+    public Book updateBook(Long id, BookRequest request, Long sellerId) {
         validateId(id);
         Book existing = findBook(id);
+        
+        // 본인 책인지 검증 (선택 사항이지만 권장)
+        if (existing.getSellerId() != null && !existing.getSellerId().equals(sellerId)) {
+            throw new IllegalArgumentException("본인이 등록한 교재만 수정할 수 있습니다.");
+        }
+        
         validateRequest(request);
 
         Book updated = Book.builder()
@@ -98,7 +105,7 @@ public class BookService {
                 .price(request.price())
                 .condition(normalize(request.condition()))
                 .seller(normalize(request.seller()))
-                .sellerId(existing.getSellerId())
+                .sellerId(sellerId)
                 .createdAt(existing.getCreatedAt())
                 .status(existing.getStatus())
                 .buyerId(existing.getBuyerId())

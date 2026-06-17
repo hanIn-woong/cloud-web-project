@@ -27,8 +27,12 @@ class BookControllerTest {
     void setUp() {
         BookRepository bookRepository = new BookRepository();
         bookRepository.init();
+        
+        com.example.backend.domain.user.UserRepository userRepository = new com.example.backend.domain.user.UserRepository();
+        userRepository.init();
+        
         BookService bookService = new BookService(bookRepository);
-        BookController bookController = new BookController(bookService);
+        BookController bookController = new BookController(bookService, userRepository);
 
         objectMapper = new ObjectMapper();
         mockMvc = standaloneSetup(bookController)
@@ -44,10 +48,12 @@ class BookControllerTest {
                 "Cloud Press",
                 12000,
                 "상",
-                "gildong"
+                "한인웅"
         );
 
+        // 한인웅(202600006) 계정으로 세션 설정
         String createdBody = mockMvc.perform(post("/api/books")
+                        .sessionAttr("userId", "202600006")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createRequest)))
                 .andExpect(status().isOk())
@@ -77,10 +83,11 @@ class BookControllerTest {
                 "Cloud Press",
                 15000,
                 "중",
-                "gildong"
+                "한인웅"
         );
 
         mockMvc.perform(put("/api/books/{id}", createdId)
+                        .sessionAttr("userId", "202600006")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isOk())

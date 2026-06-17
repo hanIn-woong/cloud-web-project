@@ -37,14 +37,25 @@ public class BookController {
         return ApiResponse.success(bookService.findBook(id));
     }
 
+    private final com.example.backend.domain.user.UserRepository userRepository;
+    private static final String SESSION_USER_ID = "userId";
+
     @PostMapping
-    public ApiResponse<Book> createBook(@RequestBody BookRequest request) {
-        return ApiResponse.success(bookService.createBook(request));
+    public ApiResponse<Book> createBook(@RequestBody BookRequest request, jakarta.servlet.http.HttpSession session) {
+        String loginId = (String) session.getAttribute(SESSION_USER_ID);
+        com.example.backend.domain.user.User user = userRepository.findByUserId(loginId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자 정보를 찾을 수 없습니다."));
+        
+        return ApiResponse.success(bookService.createBook(request, user.getId()));
     }
 
     @PutMapping("/{id:\\d+}")
-    public ApiResponse<Book> updateBook(@PathVariable Long id, @RequestBody BookRequest request) {
-        return ApiResponse.success(bookService.updateBook(id, request));
+    public ApiResponse<Book> updateBook(@PathVariable Long id, @RequestBody BookRequest request, jakarta.servlet.http.HttpSession session) {
+        String loginId = (String) session.getAttribute(SESSION_USER_ID);
+        com.example.backend.domain.user.User user = userRepository.findByUserId(loginId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자 정보를 찾을 수 없습니다."));
+
+        return ApiResponse.success(bookService.updateBook(id, request, user.getId()));
     }
 
     @DeleteMapping("/{id:\\d+}")

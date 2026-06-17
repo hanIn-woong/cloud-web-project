@@ -32,3 +32,31 @@ export const getBook = async (id) => {
 
     return response.data?.data ?? response.data;
 };
+
+export const reserveBook = async (id) => {
+    const response = await axios.post(`${API_BASE_URL}/api/books/${id}/reserve`, {}, {
+        withCredentials: true,
+    });
+    return response.data?.data ?? response.data;
+};
+
+export const cancelReservation = async (id) => {
+    const response = await axios.delete(`${API_BASE_URL}/api/books/${id}/reserve`, {
+        withCredentials: true,
+    });
+    return response.data?.data ?? response.data;
+};
+
+export const completePurchase = async (id) => {
+    const response = await axios.post(`${API_BASE_URL}/api/books/${id}/complete`, {}, {
+        withCredentials: true,
+    });
+    return response.data?.data ?? response.data;
+};
+
+export const getMyPurchases = async () => {
+    const response = await axios.get(`${API_BASE_URL}/api/members/me/purchases`, {
+        withCredentials: true,
+    });
+    return response.data?.data ?? response.data;
+};

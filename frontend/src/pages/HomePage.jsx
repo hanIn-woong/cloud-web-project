@@ -77,7 +77,7 @@ const HomePage = () => {
                                 <Link to={`/books/${book.id}`} key={book.id} className="book-card">
                                     <div className="book-info">
                                         <span className={`book-status ${book.status.toLowerCase()}`}>
-                                            {book.status === 'AVAILABLE' ? '판매중' : '판매완료'}
+                                            {book.status === 'SALE' ? '판매중' : book.status === 'RESERVED' ? '예약중' : '판매완료'}
                                         </span>
                                         <h3 className="book-title">{book.title}</h3>
                                         <p className="book-author">{book.author} | {book.publisher}</p>

@@ -206,12 +206,17 @@
     text-transform: uppercase;
 }
 
-.book-status.available {
+.book-status.sale {
     background-color: #c6f6d5;
     color: #22543d;
 }
 
-.book-status.sold_out {
+.book-status.reserved {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.book-status.sold {
     background-color: #fed7d7;
     color: #822727;
 }

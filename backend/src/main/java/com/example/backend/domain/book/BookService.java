@@ -39,7 +39,14 @@ public class BookService {
         List<Book> filteredBooks = bookRepository.findAll().stream()
                 .filter(book -> matchesKeyword(book, normalizedKeyword))
                 .filter(book -> matchesCondition(book, normalizedCondition))
-                .filter(book -> matchesStatus(book, normalizedStatus))
+                .filter(book -> {
+                    // 명시적인 상태 필터가 있는 경우 해당 상태로 필터링
+                    if (normalizedStatus != null) {
+                        return book.getStatus() == normalizedStatus;
+                    }
+                    // 필터가 없는 경우 기본적으로 SALE(판매중)인 것만 노출
+                    return book.getStatus() == BookStatus.SALE;
+                })
                 .sorted(Comparator.comparing(Book::getId))
                 .toList();
 

@@ -56,7 +56,87 @@ public class BookService {
     public Book findBook(Long id) {
         validateId(id);
         return bookRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Book not found."));
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 교재입니다."));
+    }
+
+    public Book createBook(BookRequest request) {
+        validateRequest(request);
+
+        Book book = new Book(
+                nextId(),
+                normalize(request.title()),
+                normalize(request.author()),
+                normalize(request.publisher()),
+                request.price(),
+                normalize(request.condition()),
+                normalize(request.seller()),
+                null,     // sellerId
+                BookStatus.SALE, // status
+                null            // buyerId
+        );
+
+        return bookRepository.save(book);
+    }
+
+    public Book updateBook(Long id, BookRequest request) {
+        validateId(id);
+        findBook(id);
+        validateRequest(request);
+
+        Book updated = new Book(
+                id,
+                normalize(request.title()),
+                normalize(request.author()),
+                normalize(request.publisher()),
+                request.price(),
+                normalize(request.condition()),
+                normalize(request.seller()),
+                null,    // sellerId
+                BookStatus.SALE, // status
+                null            // buyerId
+        );
+
+        return bookRepository.save(updated);
+    }
+
+    public void deleteBook(Long id) {
+        validateId(id);
+        findBook(id);
+        bookRepository.deleteById(id);
+    }
+
+    private Long nextId() {
+        return bookRepository.findAll().stream()
+                .mapToLong(Book::getId)
+                .max()
+                .orElse(0L) + 1L;
+    }
+
+    private void validateRequest(BookRequest request) {
+        if (request == null) {
+            throw new IllegalArgumentException("요청 본문이 필요합니다.");
+        }
+        validateText(request.title(), "교재명");
+        validateText(request.author(), "저자");
+        validateText(request.publisher(), "출판사");
+        validateText(request.condition(), "상태");
+        validateText(request.seller(), "판매자");
+
+        if (request.price() == null || request.price() < 0) {
+            throw new IllegalArgumentException("가격은 0 이상이어야 합니다.");
+        }
+    }
+
+    private void validateId(Long id) {
+        if (id == null || id < 1) {
+            throw new IllegalArgumentException("교재 ID는 1 이상이어야 합니다.");
+        }
+    }
+
+    private void validateText(String value, String fieldName) {
+        if (normalize(value).isEmpty()) {
+            throw new IllegalArgumentException(fieldName + "은(는) 필수입니다.");
+        }
     }
 
     private boolean matchesKeyword(Book book, String keyword) {
@@ -115,11 +195,6 @@ public class BookService {
         return Math.min(size, MAX_SIZE);
     }
 
-    private void validateId(Long id) {
-        if (id == null || id < 1) {
-            throw new IllegalArgumentException("Book id must be greater than 0.");
-        }
-    }
 
     private int calculateTotalPages(long totalElements, int size) {
         if (totalElements == 0) {

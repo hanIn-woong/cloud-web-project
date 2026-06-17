@@ -3,6 +3,7 @@ import { ToastProvider } from './context/ToastContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import BookForm from './pages/BookForm';
 import LoginPage from './features/auth/LoginPage';
 import SignupPage from './features/auth/SignupPage';
 import BookList from './features/books/BookList';
@@ -13,6 +14,13 @@ const Home = () => (
     <div style={{ padding: '20px' }}>
         <h1>메인 페이지</h1>
         <p>강남대 중고 교재 거래 사이트에 오신 것을 환영합니다.</p>
+    </div>
+);
+
+const BookList = () => (
+    <div style={{ padding: '20px' }}>
+        <h1>교재 목록</h1>
+        <p>교재 목록 및 검색 기능 구현 예정 (정민성)</p>
     </div>
 );
 
@@ -43,6 +51,8 @@ const AppRoutes = () => (
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/books" element={<BookList />} />
                 <Route path="/books/:id" element={<BookDetail />} />
+                <Route path="/books/new" element={<BookForm />} />
+                <Route path="/books/:id/edit" element={<BookForm />} />
                 <Route
                     path="/mypage"
                     element={

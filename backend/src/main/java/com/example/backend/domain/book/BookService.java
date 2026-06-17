@@ -39,7 +39,6 @@ public class BookService {
         List<Book> filteredBooks = bookRepository.findAll().stream()
                 .filter(book -> matchesKeyword(book, normalizedKeyword))
                 .filter(book -> matchesCondition(book, normalizedCondition))
-<<<<<<< HEAD
                 .filter(book -> {
                     // 명시적인 상태 필터가 있는 경우 해당 상태로 필터링
                     if (normalizedStatus != null) {
@@ -48,9 +47,6 @@ public class BookService {
                     // 필터가 없는 경우 기본적으로 SALE(판매중)인 것만 노출
                     return book.getStatus() == BookStatus.SALE;
                 })
-=======
-                .filter(book -> matchesStatus(book, normalizedStatus))
->>>>>>> feature/mypage-wishlist
                 .sorted(Comparator.comparing(Book::getId))
                 .toList();
 
@@ -74,20 +70,6 @@ public class BookService {
     public Book createBook(BookRequest request) {
         validateRequest(request);
 
-<<<<<<< HEAD
-        Book book = new Book(
-                nextId(),
-                normalize(request.title()),
-                normalize(request.author()),
-                normalize(request.publisher()),
-                request.price(),
-                normalize(request.condition()),
-                normalize(request.seller()),
-                null,     // sellerId
-                BookStatus.SALE, // status
-                null            // buyerId
-        );
-=======
         Book book = Book.builder()
                 .id(nextId())
                 .title(normalize(request.title()))
@@ -99,30 +81,12 @@ public class BookService {
                 .createdAt(System.currentTimeMillis())
                 .status(BookStatus.SALE)
                 .build();
->>>>>>> feature/mypage-wishlist
 
         return bookRepository.save(book);
     }
 
     public Book updateBook(Long id, BookRequest request) {
         validateId(id);
-<<<<<<< HEAD
-        findBook(id);
-        validateRequest(request);
-
-        Book updated = new Book(
-                id,
-                normalize(request.title()),
-                normalize(request.author()),
-                normalize(request.publisher()),
-                request.price(),
-                normalize(request.condition()),
-                normalize(request.seller()),
-                null,    // sellerId
-                BookStatus.SALE, // status
-                null            // buyerId
-        );
-=======
         Book existing = findBook(id);
         validateRequest(request);
 
@@ -139,7 +103,6 @@ public class BookService {
                 .status(existing.getStatus())
                 .buyerId(existing.getBuyerId())
                 .build();
->>>>>>> feature/mypage-wishlist
 
         return bookRepository.save(updated);
     }
@@ -199,10 +162,6 @@ public class BookService {
             return true;
         }
         return containsIgnoreCase(book.getCondition(), condition);
-    }
-
-    private boolean matchesStatus(Book book, BookStatus status) {
-        return status == null || book.getStatus() == status;
     }
 
     private BookStatus parseStatus(String status) {

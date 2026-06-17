@@ -38,11 +38,7 @@ public class PurchaseService {
     }
 
     /**
-<<<<<<< HEAD
      * 예약 취소 (판매자 또는 구매 희망자 권한)
-=======
-     * 예약 취소 (판매자 권한)
->>>>>>> feature/mypage-wishlist
      */
     public void cancelReservation(Long bookId, String sessionUserId) {
         Book book = findBookById(bookId);
@@ -51,17 +47,12 @@ public class PurchaseService {
         if (book.getStatus() != BookStatus.RESERVED) {
             throw new IllegalArgumentException("예약 상태가 아닌 교재입니다.");
         }
-<<<<<<< HEAD
 
         boolean isSeller = book.getSellerId().equals(user.getId());
         boolean isBuyer = user.getId().equals(book.getBuyerId());
 
         if (!isSeller && !isBuyer) {
             throw new IllegalArgumentException("예약을 취소할 권한이 없습니다.");
-=======
-        if (!book.getSellerId().equals(user.getId())) {
-            throw new IllegalArgumentException("판매자만 예약을 취소할 수 있습니다.");
->>>>>>> feature/mypage-wishlist
         }
 
         book.setStatus(BookStatus.SALE);

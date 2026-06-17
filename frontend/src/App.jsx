@@ -3,19 +3,13 @@ import { ToastProvider } from './context/ToastContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import HomePage from './pages/HomePage';
 import BookForm from './pages/BookForm';
 import LoginPage from './features/auth/LoginPage';
 import SignupPage from './features/auth/SignupPage';
 import CommentContainer from './features/comment/CommentContainer';
 import BookList from './features/books/BookList';
 import './App.css';
-
-const Home = () => (
-    <div style={{ padding: '20px' }}>
-        <h1>메인 페이지</h1>
-        <p>강남대 중고 교재 거래 사이트에 오신 것을 환영합니다.</p>
-    </div>
-);
 
 const MyPage = () => (
     <div style={{ padding: '20px' }}>
@@ -54,7 +48,7 @@ const AppRoutes = () => (
         <Header />
         <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
             <Routes>
-                <Route path="/" element={<Home />} />
+                <Route path="/" element={<HomePage />} />
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/books" element={<BookList />} />

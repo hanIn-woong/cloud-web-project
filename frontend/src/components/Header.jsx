@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import knuLogo from '../assets/KNU_logo.png';
 
 const Header = () => {
     const navigate = useNavigate();
@@ -13,7 +14,10 @@ const Header = () => {
     return (
         <nav style={styles.nav}>
             <div style={styles.logo}>
-                <Link to="/" style={styles.link}>강남대 중고교재</Link>
+                <Link to="/" style={styles.link}>
+                    <img src={knuLogo} alt="KNU Logo" style={styles.logoImg} />
+                    강남대 중고교재
+                </Link>
             </div>
             <ul style={styles.menu}>
                 <li><Link to="/books" style={styles.link}>교재목록</Link></li>
@@ -59,6 +63,13 @@ const styles = {
     link: {
         color: '#fff',
         textDecoration: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+    },
+    logoImg: {
+        height: '32px',
+        width: 'auto',
     },
     userName: {
         fontWeight: 600,

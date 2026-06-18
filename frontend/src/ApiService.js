@@ -2,8 +2,18 @@ import axios from 'axios';
 
 /**
  * 백엔드 API와의 통신을 위한 공통 Axios 인스턴스
+ * Codespace 환경에서는 포트 포워딩 주소를 자동으로 감지합니다.
  */
-const API_BASE_URL = 'http://localhost:8080';
+const getBaseUrl = () => {
+    const { hostname } = window.location;
+    if (hostname.includes('github.dev') || hostname.includes('app.github.dev')) {
+        // 현재 프론트엔드 URL(5173)을 기반으로 백엔드 URL(8080)을 추론합니다.
+        return `https://${hostname.replace('-5173', '-8080')}`;
+    }
+    return 'http://localhost:8080';
+};
+
+const API_BASE_URL = getBaseUrl();
 
 const api = axios.create({
     baseURL: API_BASE_URL,
@@ -55,6 +65,14 @@ export const wishApi = {
 export const memberApi = {
     getMyBooks: (memberId) => api.get(`/api/members/${memberId}/books`),
     getMyWishes: (memberId) => api.get(`/api/members/${memberId}/wishes`),
+};
+
+export const adminApi = {
+    getStats: () => api.get('/api/admin/stats'),
+    getUsers: () => api.get('/api/admin/users'),
+    deleteUser: (id) => api.delete(`/api/admin/users/${id}`),
+    getBooks: () => api.get('/api/admin/books'),
+    deleteBook: (id) => api.delete(`/api/admin/books/${id}`),
 };
 
 export default api;

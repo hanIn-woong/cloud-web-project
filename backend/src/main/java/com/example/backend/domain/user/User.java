@@ -19,6 +19,16 @@ public class User implements BaseEntity<Long> {
     private String password; // 비밀번호
     private String name;     // 이름
     private String major;    // 전공
+    private boolean isAdmin = false; // 관리자 여부
+
+    public User(Long id, String userId, String password, String name, String major) {
+        this.id = id;
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.major = major;
+        this.isAdmin = false;
+    }
 
     @Override
     public Long getId() {

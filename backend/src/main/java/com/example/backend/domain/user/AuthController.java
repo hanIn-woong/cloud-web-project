@@ -31,6 +31,7 @@ public class AuthController {
     public ApiResponse<UserResponse> login(@RequestBody LoginRequest request, HttpSession session) {
         UserResponse user = authService.login(request);
         session.setAttribute(SESSION_USER_ID, user.getUserId());
+        session.setAttribute("isAdmin", user.isAdmin());
         return ApiResponse.success(user);
     }
 

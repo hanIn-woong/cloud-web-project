@@ -29,7 +29,9 @@ public class UserRepository extends BaseRepository<User, Long> {
         save(new User(11L, "202600011", "1234", "김태희", "정보통신"));
         
         // admin 계정 (외부 관리자 설정)
-        save(new User(99L, "admin", "admin123", "시스템관리자", "운영팀"));
+        User admin = new User(99L, "admin", "admin123", "시스템관리자", "운영팀");
+        admin.setAdmin(true);
+        save(admin);
     }
 
     public Optional<User> findByUserId(String userId) {

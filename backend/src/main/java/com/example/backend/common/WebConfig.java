@@ -14,6 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     private final LoginInterceptor loginInterceptor;
+    private final AdminInterceptor adminInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -26,14 +27,17 @@ public class WebConfig implements WebMvcConfigurer {
                         "/api/books/{id:[0-9]+}",
                         "/api/books/search"
                 ); // 인증이 필요 없는 경로 제외
+
+        registry.addInterceptor(adminInterceptor)
+                .addPathPatterns("/api/admin/**"); // 관리자 전용 API 경로에 적용
     }
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         // 모든 경로에 대해 CORS 설정을 적용
         registry.addMapping("/**")
-                // 프론트엔드 개발 서버 주소 허용
-                .allowedOrigins("http://localhost:5173", "http://localhost:3000")
+                // Codespace 등 다양한 환경에서의 프론트엔드 접속을 허용하기 위해 패턴 기반 허용
+                .allowedOriginPatterns("*")
                 // 허용할 HTTP 메서드
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 // 자격 증명(쿠키 등) 허용

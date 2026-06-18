@@ -11,6 +11,7 @@ import BookList from './features/books/BookList';
 import BookDetail from './features/books/BookDetail';
 import MyPage from './pages/MyPage';
 import WishList from './pages/WishList';
+import AdminPage from './pages/AdminPage';
 import './App.css';
 
 const PrivateRoute = ({ children }) => {
@@ -21,6 +22,25 @@ const PrivateRoute = ({ children }) => {
     }
 
     return isAuthenticated ? children : <Navigate to="/login" replace />;
+};
+
+const AdminRoute = ({ children }) => {
+    const { isAuthenticated, isAdmin, isLoading } = useAuth();
+
+    if (isLoading) {
+        return <div style={{ padding: '20px' }}>인증 상태를 확인하는 중...</div>;
+    }
+
+    if (!isAuthenticated) {
+        return <Navigate to="/login" replace />;
+    }
+
+    if (!isAdmin) {
+        alert('관리자 권한이 없습니다.');
+        return <Navigate to="/" replace />;
+    }
+
+    return children;
 };
 
 const AppRoutes = () => (
@@ -49,6 +69,14 @@ const AppRoutes = () => (
                         <PrivateRoute>
                             <WishList />
                         </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/admin"
+                    element={
+                        <AdminRoute>
+                            <AdminPage />
+                        </AdminRoute>
                     }
                 />
                 <Route path="*" element={<Navigate to="/" replace />} />

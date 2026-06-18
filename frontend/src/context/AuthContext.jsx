@@ -94,6 +94,7 @@ export const AuthProvider = ({ children }) => {
             user,
             isLoading,
             isAuthenticated: !!user,
+            isAdmin: !!(user?.isAdmin || user?.admin),
             wishlist,
             isWished,
             toggleWishLocal,
